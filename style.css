@@ -129,7 +129,7 @@ body {
 .modal-mask.show { display: flex; }
 .modal { background: var(--card); border-radius: 24px; padding: 28px 24px; max-width: 360px; width: 100%; text-align: center; }
 .modal h3 { font-size: 20px; font-weight: 800; margin-bottom: 8px; }
-.modal .qr-box { margin: 20px auto; width: 220px; height: 220px; background: var(--border); border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 13px; color: var(--text-light); }
-.modal .qr-box img { width: 100%; height: 100%; border-radius: 16px; }
+.modal .qr-box { margin: 16px auto; width: 240px; border-radius: 16px; }
+.modal .qr-box img { width: 100%; height: auto; border-radius: 16px; display: block; }
 .modal .pay-tip { font-size: 13px; color: var(--text-light); }
 .modal-close { margin-top: 16px; background: none; border: none; color: var(--text-light); cursor: pointer; font-size: 14px; }

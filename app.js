@@ -183,19 +183,12 @@ function renderReportArea(t) {
   } else {
     area.innerHTML = `
       <div class="paywall">
-        <div class="paywall-title">🔒 解锁完整解读报告</div>
-        <div class="paywall-desc">包含它的小世界、相处建议、喜欢的环境和日常偏好，共 4 篇专属解读</div>
+        <div class="paywall-title">🔒 想看完整的相处报告吗？</div>
+        <div class="paywall-desc">完整报告含 4 篇专属解读：它的小世界、相处建议、喜欢的环境、日常偏好</div>
         <div class="price"><small>¥</small>${CONFIG.price}</div>
-        <div class="pay-steps">
-          <div class="pay-step">1️⃣ 微信扫码付款 <b>¥${CONFIG.price}</b></div>
-          <div class="pay-step">2️⃣ 付款后加微信，发「付款截图 + 你家毛孩子的名字」</div>
-          <div class="pay-step">3️⃣ 我把完整报告发给你</div>
-        </div>
-        <img src="${CONFIG.qrcodeImage}" class="pay-qrcode" alt="微信收款码">
-        <div class="pay-wechat">微信号：<b id="wechat-id">${CONFIG.wechatId}</b></div>
-        <button class="btn-copy-wechat" id="btn-copy-wechat">复制微信号</button>
+        <button class="primary-btn" id="btn-unlock" style="margin-top:16px;">立即解锁完整报告</button>
       </div>`;
-    document.getElementById('btn-copy-wechat').addEventListener('click', copyWechat);
+    document.getElementById('btn-unlock').addEventListener('click', showUnlockModal);
   }
 }
 
@@ -224,6 +217,31 @@ function copyWechat() {
     document.execCommand('copy'); document.body.removeChild(ta);
     toast('微信号已复制');
   }
+}
+
+// ---------- 收款码弹窗 ----------
+function showUnlockModal() {
+  let mask = document.getElementById('unlock-modal');
+  if (!mask) {
+    mask = document.createElement('div');
+    mask.id = 'unlock-modal';
+    mask.className = 'modal-mask';
+    mask.innerHTML = `
+      <div class="modal">
+        <h3>微信扫码解锁报告</h3>
+        <div class="qr-box"><img src="${CONFIG.qrcodeImage}" alt="微信收款码"></div>
+        <div class="pay-step">1️⃣ 微信扫码付款 <b>¥${CONFIG.price}</b></div>
+        <div class="pay-step">2️⃣ 付款后加微信，发「付款截图 + 毛孩子名字」</div>
+        <div class="pay-step">3️⃣ 我把完整报告发给你</div>
+        <div class="pay-wechat">微信号：<b>${CONFIG.wechatId}</b></div>
+        <button class="btn-copy-wechat" id="modal-copy-wechat">复制微信号</button>
+        <button class="modal-close" id="modal-close">先不解锁</button>
+      </div>`;
+    document.body.appendChild(mask);
+    document.getElementById('modal-close').addEventListener('click', () => mask.classList.remove('show'));
+    document.getElementById('modal-copy-wechat').addEventListener('click', copyWechat);
+  }
+  mask.classList.add('show');
 }
 
 // ---------- Toast ----------
