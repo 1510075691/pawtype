@@ -237,7 +237,7 @@ function showUnlockModal() {
         <h3>微信扫码解锁报告</h3>
         <div class="qr-box"><img src="${CONFIG.qrcodeImage}" alt="微信收款码"></div>
         <div class="pay-step">1️⃣ 微信扫码付款 <b>¥${CONFIG.price}</b></div>
-        <div class="pay-step">2️⃣ 付款后加微信，发「付款截图 + 毛孩子名字」</div>
+        <div class="pay-step">2️⃣ 付款后加微信，发「付款截图 + 测出的宠格名」</div>
         <div class="pay-step">3️⃣ 我把完整报告发给你</div>
         <div class="pay-wechat">微信号：<b>${CONFIG.wechatId}</b></div>
         <button class="btn-copy-wechat" id="modal-copy-wechat">复制微信号</button>
