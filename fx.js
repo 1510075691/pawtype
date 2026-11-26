@@ -1,8 +1,7 @@
 // ============================================================
 // 特效模块（零依赖 Canvas）
 // 1. 全局漂浮粒子背景
-// 2. 四维性格雷达图（蛛网图）
-// 3. 结果页庆祝粒子
+// 2. 结果页庆祝粒子
 // ============================================================
 
 // ---------- 全局粒子背景 ----------
@@ -60,102 +59,6 @@ function initBackground() {
     requestAnimationFrame(tick);
   }
   tick();
-}
-
-// ---------- 四维性格雷达图 ----------
-// totals: { EI, NS, FT, PJ } 每项 -18..+18（正=偏 left 极，负=偏 right 极）
-function drawRadar(canvas, totals) {
-  const meta = [
-    { key: 'EI', left: 'E', right: 'I', leftName: '外向', rightName: '内向', angle: 0 },
-    { key: 'NS', left: 'N', right: 'S', leftName: '好奇', rightName: '安稳', angle: -Math.PI / 2 },
-    { key: 'FT', left: 'F', right: 'T', leftName: '粘人', rightName: '独立', angle: Math.PI },
-    { key: 'PJ', left: 'P', right: 'J', leftName: '随性', rightName: '规律', angle: Math.PI / 2 },
-  ];
-
-  const dpr = window.devicePixelRatio || 1;
-  const cssW = canvas.clientWidth || 320;
-  const cssH = canvas.clientHeight || 320;
-  canvas.width = cssW * dpr;
-  canvas.height = cssH * dpr;
-  const ctx = canvas.getContext('2d');
-  ctx.scale(dpr, dpr);
-
-  const cx = cssW / 2;
-  const cy = cssH / 2;
-  const R = Math.min(cssW, cssH) / 2 - 46;
-
-  ctx.clearRect(0, 0, cssW, cssH);
-
-  // 背景蛛网（外圈 + 中圈 + 十字轴）
-  ctx.lineWidth = 1;
-  ctx.strokeStyle = 'rgba(255,138,92,0.18)';
-  ctx.beginPath();
-  ctx.arc(cx, cy, R, 0, Math.PI * 2);
-  ctx.stroke();
-  ctx.beginPath();
-  ctx.arc(cx, cy, R / 2, 0, Math.PI * 2);
-  ctx.stroke();
-
-  meta.forEach(m => {
-    const dx = Math.cos(m.angle), dy = Math.sin(m.angle);
-    ctx.beginPath();
-    ctx.moveTo(cx - dx * R, cy - dy * R);
-    ctx.lineTo(cx + dx * R, cy + dy * R);
-    ctx.stroke();
-  });
-
-  // 数据多边形
-  const pts = meta.map(m => {
-    const score = totals[m.key] || 0;
-    const p = Math.max(0, Math.min(1, (score + 18) / 36)); // 0=完全right, 1=完全left
-    const off = (p * 2 - 1) * R; // -R..+R，正=偏 left
-    return { x: cx + Math.cos(m.angle) * off, y: cy + Math.sin(m.angle) * off };
-  });
-
-  const grad = ctx.createLinearGradient(cx - R, cy, cx + R, cy);
-  grad.addColorStop(0, 'rgba(185,160,224,0.55)');
-  grad.addColorStop(1, 'rgba(255,138,92,0.55)');
-
-  ctx.beginPath();
-  ctx.moveTo(pts[0].x, pts[0].y);
-  for (let i = 1; i < pts.length; i++) ctx.lineTo(pts[i].x, pts[i].y);
-  ctx.closePath();
-  ctx.fillStyle = grad;
-  ctx.fill();
-  ctx.strokeStyle = 'rgba(255,138,92,0.9)';
-  ctx.lineWidth = 2;
-  ctx.stroke();
-
-  // 顶点光点
-  pts.forEach(p => {
-    ctx.beginPath();
-    ctx.arc(p.x, p.y, 5, 0, Math.PI * 2);
-    ctx.fillStyle = '#FF8A5C';
-    ctx.fill();
-    ctx.beginPath();
-    ctx.arc(p.x, p.y, 9, 0, Math.PI * 2);
-    ctx.fillStyle = 'rgba(255,138,92,0.25)';
-    ctx.fill();
-  });
-
-  // 轴端标注
-  ctx.font = '12px -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif';
-  ctx.textAlign = 'center';
-  ctx.textBaseline = 'middle';
-  meta.forEach(m => {
-    const dx = Math.cos(m.angle), dy = Math.sin(m.angle);
-    // left 极（正方向）
-    let lx = cx + dx * (R + 26), ly = cy + dy * (R + 26);
-    // right 极（负方向）
-    let rx = cx - dx * (R + 26), ry = cy - dy * (R + 26);
-    // 微调避免贴边
-    if (m.angle === 0) { lx += 4; rx -= 4; }
-    if (m.angle === Math.PI) { lx -= 4; rx += 4; }
-    ctx.fillStyle = '#3D2C23';
-    ctx.fillText(m.leftName + m.left, lx, ly);
-    ctx.fillStyle = '#9B8577';
-    ctx.fillText(m.rightName + m.right, rx, ry);
-  });
 }
 
 // ---------- 结果页庆祝粒子（彩带/星星）----------
