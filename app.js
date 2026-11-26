@@ -8,7 +8,6 @@ const state = {
   current: 0,
   answers: [],     // { d: 维度, s: 分数 }
   type: null,      // 计算出的宠格 code
-  unlocked: false,
 };
 
 const DIM_ORDER = ["EI", "NS", "FT", "PJ"];
@@ -44,7 +43,6 @@ btnStart.addEventListener('click', () => {
   state.petName = petNameInput.value.trim() || '毛孩子';
   state.current = 0;
   state.answers = [];
-  state.unlocked = false;
   startQuiz();
 });
 
@@ -119,9 +117,24 @@ function computeType() {
 function finishQuiz() {
   const { code, totals } = computeType();
   state.type = code;
+  document.getElementById('progress-fill').style.width = '100%';
+
+  renderResult(code, totals);
+  showScreen('screen-result');
+
+  // 庆祝粒子（测出结果瞬间在 emoji 位置炸开彩纸）
+  setTimeout(() => {
+    const emoji = document.querySelector('.result-emoji');
+    if (emoji) {
+      const r = emoji.getBoundingClientRect();
+      burstCelebration(r.left + r.width / 2, r.top + r.height / 2, 55);
+    }
+  }, 80);
+}
+
+function renderResult(code, totals) {
   const t = TYPES[code];
   const speciesName = state.species === 'cat' ? '猫咪' : '狗狗';
-  document.getElementById('progress-fill').style.width = '100%';
 
   const dimChart = DIM_ORDER.map(d => {
     const meta = DIM_META_MAP[d];
@@ -168,46 +181,20 @@ function finishQuiz() {
   document.getElementById('btn-copy').addEventListener('click', copyShare);
 
   renderReportArea(t);
-
-  // 关键：切换到结果页
-  showScreen('screen-result');
-
-  // 庆祝粒子（测出结果瞬间在 emoji 位置炸开彩纸）
-  setTimeout(() => {
-    const emoji = document.querySelector('.result-emoji');
-    if (emoji) {
-      const r = emoji.getBoundingClientRect();
-      burstCelebration(r.left + r.width / 2, r.top + r.height / 2, 55);
-    }
-  }, 80);
-
-  // 做完测试自动弹出收款码，确保用户能看到支付环节
-  setTimeout(showUnlockModal, 900);
 }
 
 function renderReportArea(t) {
   const area = document.getElementById('report-area');
-  if (state.unlocked) {
-    area.innerHTML = `
-      <div class="unlocked-report">
-        <div class="report-section"><h3>🐾 它的小世界</h3><p>${t.desc}</p></div>
-        <div class="report-section"><h3>💡 相处建议</h3><p>${t.advice}</p></div>
-        <div class="report-section"><h3>🏠 喜欢的生活环境</h3><p>${t.environment}</p></div>
-        <div class="report-section"><h3>🎾 日常偏好</h3><p>${t.preference}</p></div>
-        <div class="report-section"><h3>⚠️ 它的小雷区</h3><p>${t.dislike}</p></div>
-        <div class="report-section"><h3>🧸 适合的玩具和游戏</h3><p>${t.toys}</p></div>
-        <div class="report-section"><h3>👨‍👩‍👧 最适合它的主人</h3><p>${t.owner}</p></div>
-      </div>`;
-  } else {
-    area.innerHTML = `
-      <div class="paywall">
-        <div class="paywall-title">🔒 想看完整的相处报告吗？</div>
-        <div class="paywall-desc">完整报告含 4 篇专属解读：它的小世界、相处建议、喜欢的环境、日常偏好</div>
-        <div class="price"><small>¥</small>${CONFIG.price}</div>
-        <button class="primary-btn" id="btn-unlock" style="margin-top:16px;">立即解锁完整报告</button>
-      </div>`;
-    document.getElementById('btn-unlock').addEventListener('click', showUnlockModal);
-  }
+  area.innerHTML = `
+    <div class="unlocked-report">
+      <div class="report-section"><h3>🐾 它的小世界</h3><p>${t.desc}</p></div>
+      <div class="report-section"><h3>💡 相处建议</h3><p>${t.advice}</p></div>
+      <div class="report-section"><h3>🏠 喜欢的生活环境</h3><p>${t.environment}</p></div>
+      <div class="report-section"><h3>🎾 日常偏好</h3><p>${t.preference}</p></div>
+      <div class="report-section"><h3>⚠️ 它的小雷区</h3><p>${t.dislike}</p></div>
+      <div class="report-section"><h3>🧸 适合的玩具和游戏</h3><p>${t.toys}</p></div>
+      <div class="report-section"><h3>👨‍👩‍👧 最适合它的主人</h3><p>${t.owner}</p></div>
+    </div>`;
 }
 
 // ---------- 分享 ----------
@@ -222,44 +209,6 @@ function copyShare() {
     document.execCommand('copy'); document.body.removeChild(ta);
     toast('分享文案已复制');
   }
-}
-
-// ---------- 复制微信号 ----------
-function copyWechat() {
-  const id = CONFIG.wechatId;
-  if (navigator.clipboard && navigator.clipboard.writeText) {
-    navigator.clipboard.writeText(id).then(() => toast('微信号已复制，去微信加我吧'));
-  } else {
-    const ta = document.createElement('textarea');
-    ta.value = id; document.body.appendChild(ta); ta.select();
-    document.execCommand('copy'); document.body.removeChild(ta);
-    toast('微信号已复制');
-  }
-}
-
-// ---------- 收款码弹窗 ----------
-function showUnlockModal() {
-  let mask = document.getElementById('unlock-modal');
-  if (!mask) {
-    mask = document.createElement('div');
-    mask.id = 'unlock-modal';
-    mask.className = 'modal-mask';
-    mask.innerHTML = `
-      <div class="modal">
-        <h3>微信扫码解锁报告</h3>
-        <div class="qr-box"><img src="${CONFIG.qrcodeImage}" alt="微信收款码"></div>
-        <div class="pay-step">1️⃣ 微信扫码付款 <b>¥${CONFIG.price}</b></div>
-        <div class="pay-step">2️⃣ 付款后加微信，发「付款截图 + 测出的宠格名」</div>
-        <div class="pay-step">3️⃣ 我把完整报告发给你</div>
-        <div class="pay-wechat">微信号：<b>${CONFIG.wechatId}</b></div>
-        <button class="btn-copy-wechat" id="modal-copy-wechat">复制微信号</button>
-        <button class="modal-close" id="modal-close">先不解锁</button>
-      </div>`;
-    document.body.appendChild(mask);
-    document.getElementById('modal-close').addEventListener('click', () => mask.classList.remove('show'));
-    document.getElementById('modal-copy-wechat').addEventListener('click', copyWechat);
-  }
-  mask.classList.add('show');
 }
 
 // ---------- Toast ----------
