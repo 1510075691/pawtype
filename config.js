@@ -3,14 +3,5 @@
 // ============================================================
 const CONFIG = {
   siteName: "PawType 宠格测试",
-  siteUrl: "https://1510075691.github.io/pawtype/",   // 部署后改成真实网址，用于分享
-
-  // 报告价格（元）
-  price: 9.9,
-
-  // 你的微信号（用户付款后加你领报告）
-  wechatId: "LiiOuO_Hanaio",
-
-  // 微信收款码图片文件名（放在本目录下）
-  qrcodeImage: "qrcode.jpg",
+  siteUrl: "https://1510075691.github.io/pawtype/",   // 你的前端网址
 };
