@@ -37,7 +37,7 @@
     const search = document.getElementById('search');
 
     function buildReport(t) {
-      return `【${t.name} ${t.emoji}】完整报告\n\n🐾 它的小世界\n${t.desc}\n\n💡 相处建议\n${t.advice}\n\n🏠 喜欢的生活环境\n${t.environment}\n\n🎾 日常偏好\n${t.preference}`;
+      return `【${t.name} ${t.emoji}】完整报告\n\n🐾 它的小世界\n${t.desc}\n\n💡 相处建议\n${t.advice}\n\n🏠 喜欢的生活环境\n${t.environment}\n\n🎾 日常偏好\n${t.preference}\n\n⚠️ 它的小雷区\n${t.dislike}\n\n🧸 适合的玩具和游戏\n${t.toys}\n\n👨‍👩‍👧 最适合它的主人\n${t.owner}`;
     }
 
     function render(filter) {
@@ -55,6 +55,9 @@
             <p><b>💡 相处建议</b><br>${t.advice}</p>
             <p><b>🏠 喜欢的生活环境</b><br>${t.environment}</p>
             <p><b>🎾 日常偏好</b><br>${t.preference}</p>
+            <p><b>⚠️ 它的小雷区</b><br>${t.dislike}</p>
+            <p><b>🧸 适合的玩具和游戏</b><br>${t.toys}</p>
+            <p><b>👨‍👩‍👧 最适合它的主人</b><br>${t.owner}</p>
           </div>
           <button class="copy-btn" data-code="${code}">复制报告</button>`;
         list.appendChild(card);
