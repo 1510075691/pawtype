@@ -169,6 +169,9 @@ function finishQuiz() {
 
   renderReportArea(t);
 
+  // 关键：切换到结果页
+  showScreen('screen-result');
+
   // 做完测试自动弹出收款码，确保用户能看到支付环节
   setTimeout(showUnlockModal, 700);
 }
