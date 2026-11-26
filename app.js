@@ -168,6 +168,9 @@ function finishQuiz() {
   document.getElementById('btn-copy').addEventListener('click', copyShare);
 
   renderReportArea(t);
+
+  // 做完测试自动弹出收款码，确保用户能看到支付环节
+  setTimeout(showUnlockModal, 700);
 }
 
 function renderReportArea(t) {
