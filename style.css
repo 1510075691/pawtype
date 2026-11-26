@@ -1,0 +1,135 @@
+:root {
+  --bg: #FFF7F0;
+  --card: #FFFFFF;
+  --primary: #FF8A5C;
+  --primary-dark: #F06B3C;
+  --accent: #FFC145;
+  --text: #3D2C23;
+  --text-light: #9B8577;
+  --border: #F3E4D6;
+  --green: #5CB87A;
+  --shadow: 0 8px 24px rgba(255, 138, 92, 0.12);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+body {
+  font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  line-height: 1.6;
+}
+
+.screen { display: none; min-height: 100vh; animation: fadeIn .3s ease; }
+.screen.active { display: block; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+/* ============ 首页 ============ */
+.home-wrap { max-width: 480px; margin: 0 auto; padding: 56px 24px 40px; text-align: center; }
+.logo { font-size: 18px; font-weight: 700; color: var(--primary); letter-spacing: 1px; }
+.home-title { font-size: 34px; font-weight: 800; margin: 20px 0 12px; line-height: 1.3; }
+.home-sub { font-size: 14px; color: var(--text-light); margin-bottom: 36px; }
+
+.species-select { display: flex; gap: 14px; margin-bottom: 20px; }
+.species-btn {
+  flex: 1; background: var(--card); border: 2px solid var(--border); border-radius: 20px;
+  padding: 22px 12px; cursor: pointer; transition: all .2s; display: flex; flex-direction: column; align-items: center; gap: 6px;
+}
+.species-btn.selected { border-color: var(--primary); background: #FFF3EC; box-shadow: var(--shadow); }
+.species-emoji { font-size: 40px; }
+.species-name { font-size: 17px; font-weight: 700; }
+.species-note { font-size: 12px; color: var(--text-light); }
+
+.pet-name-box { text-align: left; margin-bottom: 24px; }
+.pet-name-box label { font-size: 13px; color: var(--text-light); display: block; margin-bottom: 6px; }
+.pet-name-box input {
+  width: 100%; padding: 14px 16px; border: 2px solid var(--border); border-radius: 14px;
+  font-size: 16px; outline: none; background: var(--card); transition: border .2s;
+}
+.pet-name-box input:focus { border-color: var(--primary); }
+
+.primary-btn {
+  width: 100%; padding: 16px; border: none; border-radius: 16px; font-size: 17px; font-weight: 700;
+  background: var(--primary); color: #fff; cursor: pointer; transition: all .2s;
+  box-shadow: 0 6px 18px rgba(255, 138, 92, 0.35);
+}
+.primary-btn:disabled { background: #E5D5C8; box-shadow: none; cursor: not-allowed; }
+.primary-btn:not(:disabled):active { transform: scale(.98); }
+.home-tip { font-size: 12px; color: var(--text-light); margin-top: 16px; }
+
+/* ============ 答题页 ============ */
+.quiz-top {
+  position: sticky; top: 0; background: var(--bg); padding: 14px 16px; display: flex; align-items: center; gap: 12px; z-index: 10;
+}
+.back-btn { font-size: 28px; background: none; border: none; color: var(--text); cursor: pointer; width: 36px; line-height: 1; }
+.progress-bar { flex: 1; height: 8px; background: var(--border); border-radius: 8px; overflow: hidden; }
+.progress-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--primary)); border-radius: 8px; transition: width .25s; }
+.progress-text { font-size: 13px; color: var(--text-light); font-weight: 600; min-width: 40px; text-align: right; }
+
+.quiz-body { max-width: 480px; margin: 0 auto; padding: 20px 24px 48px; }
+.q-number { font-size: 13px; color: var(--primary); font-weight: 700; margin-bottom: 8px; }
+.q-text { font-size: 22px; font-weight: 700; line-height: 1.45; margin-bottom: 28px; }
+
+.option {
+  display: block; width: 100%; text-align: left; background: var(--card); border: 2px solid var(--border);
+  border-radius: 16px; padding: 16px 18px; margin-bottom: 12px; font-size: 16px; cursor: pointer; transition: all .18s;
+}
+.option:active { transform: scale(.98); }
+.option.selected { border-color: var(--primary); background: #FFF3EC; }
+
+/* ============ 结果页 ============ */
+.result-wrap { max-width: 480px; margin: 0 auto; padding: 40px 24px 60px; }
+.result-card { background: var(--card); border-radius: 28px; padding: 32px 24px; box-shadow: var(--shadow); text-align: center; }
+.result-emoji { font-size: 72px; line-height: 1; }
+.result-type { font-size: 30px; font-weight: 800; margin: 16px 0 6px; }
+.result-tagline { font-size: 15px; color: var(--text-light); margin-bottom: 24px; }
+.result-code { display: inline-block; font-size: 13px; font-weight: 700; color: var(--primary); background: #FFF3EC; padding: 4px 14px; border-radius: 20px; }
+
+.dimension-chart { margin: 28px 0; text-align: left; }
+.dim-row { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; font-size: 13px; }
+.dim-label { width: 64px; text-align: center; flex-shrink: 0; }
+.dim-label b { display: block; font-size: 13px; }
+.dim-bar { flex: 1; height: 12px; background: var(--border); border-radius: 8px; position: relative; }
+.dim-bar-fill { position: absolute; height: 100%; border-radius: 8px; transition: width .6s ease; }
+.dim-bar-fill.left { left: 50%; background: linear-gradient(90deg, var(--primary), var(--accent)); }
+.dim-bar-fill.right { right: 50%; background: linear-gradient(90deg, #B9A0E0, #8F7BD0); }
+
+.paywall { background: #FFF9F3; border: 2px dashed var(--accent); border-radius: 20px; padding: 24px 20px; margin-top: 24px; }
+.paywall-title { font-size: 18px; font-weight: 800; margin-bottom: 6px; }
+.paywall-desc { font-size: 13px; color: var(--text-light); margin-bottom: 16px; }
+.price { font-size: 32px; font-weight: 800; color: var(--primary-dark); }
+.price small { font-size: 15px; }
+
+.pay-steps { text-align: left; margin: 16px 0; }
+.pay-step { font-size: 14px; color: var(--text); margin-bottom: 8px; }
+.pay-qrcode { width: 200px; height: 200px; object-fit: contain; margin: 8px auto; display: block; border-radius: 12px; background: #fff; }
+.pay-wechat { font-size: 15px; margin: 12px 0; }
+.pay-wechat b { color: var(--primary-dark); }
+.btn-copy-wechat { padding: 12px 24px; border: none; border-radius: 14px; font-size: 14px; font-weight: 700; cursor: pointer; background: var(--green); color: #fff; }
+
+.unlocked-report { margin-top: 24px; text-align: left; }
+.report-section { background: var(--card); border-radius: 18px; padding: 20px; margin-bottom: 16px; box-shadow: 0 4px 14px rgba(0,0,0,0.04); }
+.report-section h3 { font-size: 16px; font-weight: 800; margin-bottom: 8px; color: var(--primary-dark); }
+.report-section p { font-size: 15px; color: var(--text); }
+
+.share-card { margin-top: 28px; background: var(--card); border-radius: 20px; padding: 20px; text-align: center; box-shadow: var(--shadow); }
+.share-card .rc-emoji { font-size: 48px; }
+.share-card .rc-name { font-size: 20px; font-weight: 800; margin: 8px 0; }
+.share-card .rc-url { font-size: 12px; color: var(--text-light); margin-top: 8px; }
+.share-actions { display: flex; gap: 10px; margin-top: 16px; }
+.share-actions button { flex: 1; padding: 12px; border: none; border-radius: 14px; font-size: 14px; font-weight: 700; cursor: pointer; }
+.btn-share { background: var(--green); color: #fff; }
+.btn-copy { background: var(--border); color: var(--text); }
+
+.btn-ghost { background: none; border: none; color: var(--text-light); font-size: 14px; text-decoration: underline; cursor: pointer; margin-top: 20px; }
+
+/* 支付弹窗 */
+.modal-mask { position: fixed; inset: 0; background: rgba(0,0,0,0.5); display: none; align-items: center; justify-content: center; z-index: 100; padding: 24px; }
+.modal-mask.show { display: flex; }
+.modal { background: var(--card); border-radius: 24px; padding: 28px 24px; max-width: 360px; width: 100%; text-align: center; }
+.modal h3 { font-size: 20px; font-weight: 800; margin-bottom: 8px; }
+.modal .qr-box { margin: 20px auto; width: 220px; height: 220px; background: var(--border); border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 13px; color: var(--text-light); }
+.modal .qr-box img { width: 100%; height: 100%; border-radius: 16px; }
+.modal .pay-tip { font-size: 13px; color: var(--text-light); }
+.modal-close { margin-top: 16px; background: none; border: none; color: var(--text-light); cursor: pointer; font-size: 14px; }
