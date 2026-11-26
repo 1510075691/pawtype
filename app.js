@@ -130,9 +130,9 @@ function finishQuiz() {
     const side = score >= 0 ? 'left' : 'right';
     return `
       <div class="dim-row">
-        <div class="dim-label"><b>${side === 'left' ? meta.leftName : meta.rightName}</b>${meta.label}</div>
+        <div class="dim-label"><b>${meta.leftName}</b></div>
         <div class="dim-bar"><div class="dim-bar-fill ${side}" style="width:${pct / 2}%"></div></div>
-        <div class="dim-label"><b>${side === 'left' ? meta.rightName : meta.leftName}</b></div>
+        <div class="dim-label"><b>${meta.rightName}</b></div>
       </div>`;
   }).join('');
 
@@ -143,8 +143,12 @@ function finishQuiz() {
       <div class="result-type">${t.name}</div>
       <div class="result-tagline">${speciesName} · ${t.tagline}</div>
       <span class="result-code">${code}</span>
+      <div class="radar-box">
+        <div class="radar-title">${state.petName} 的四维性格雷达</div>
+        <canvas id="radar-canvas"></canvas>
+      </div>
       <div class="dimension-chart">
-        <div style="text-align:center;font-size:13px;color:var(--text-light);margin-bottom:16px;">${state.petName} 的四维性格画像</div>
+        <div style="text-align:center;font-size:13px;color:var(--text-light);margin-bottom:16px;">四维性格画像</div>
         ${dimChart}
       </div>
     </div>
@@ -172,8 +176,19 @@ function finishQuiz() {
   // 关键：切换到结果页
   showScreen('screen-result');
 
+  // 渲染雷达图 + 庆祝粒子（需等 DOM 显示后测量尺寸）
+  setTimeout(() => {
+    const rc = document.getElementById('radar-canvas');
+    if (rc) drawRadar(rc, totals);
+    const emoji = document.querySelector('.result-emoji');
+    if (emoji) {
+      const r = emoji.getBoundingClientRect();
+      burstCelebration(r.left + r.width / 2, r.top + r.height / 2, 55);
+    }
+  }, 80);
+
   // 做完测试自动弹出收款码，确保用户能看到支付环节
-  setTimeout(showUnlockModal, 700);
+  setTimeout(showUnlockModal, 900);
 }
 
 function renderReportArea(t) {
@@ -267,3 +282,6 @@ function toast(msg) {
   clearTimeout(t._timer);
   t._timer = setTimeout(() => { t.style.display = 'none'; }, 2200);
 }
+
+// ---------- 初始化特效 ----------
+initBackground();
