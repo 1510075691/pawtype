@@ -185,6 +185,9 @@ function renderReportArea(t) {
         <div class="report-section"><h3>💡 相处建议</h3><p>${t.advice}</p></div>
         <div class="report-section"><h3>🏠 喜欢的生活环境</h3><p>${t.environment}</p></div>
         <div class="report-section"><h3>🎾 日常偏好</h3><p>${t.preference}</p></div>
+        <div class="report-section"><h3>⚠️ 它的小雷区</h3><p>${t.dislike}</p></div>
+        <div class="report-section"><h3>🧸 适合的玩具和游戏</h3><p>${t.toys}</p></div>
+        <div class="report-section"><h3>👨‍👩‍👧 最适合它的主人</h3><p>${t.owner}</p></div>
       </div>`;
   } else {
     area.innerHTML = `
