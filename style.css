@@ -137,12 +137,7 @@ body {
   background: linear-gradient(100deg, #FFF3EC, #FFE8D9); padding: 4px 14px; border-radius: 20px;
 }
 
-/* 雷达图 */
-.radar-box { margin: 28px 0 8px; text-align: center; }
-.radar-box .radar-title { font-size: 13px; color: var(--text-light); margin-bottom: 8px; }
-.radar-box canvas { width: 300px; height: 300px; max-width: 100%; margin: 0 auto; display: block; }
-
-.dimension-chart { margin: 20px 0 0; text-align: left; }
+.dimension-chart { margin: 24px 0 0; text-align: left; }
 .dim-row { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; font-size: 13px; }
 .dim-label { width: 64px; text-align: center; flex-shrink: 0; }
 .dim-label b { display: block; font-size: 13px; }
